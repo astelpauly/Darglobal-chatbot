@@ -58,22 +58,51 @@ Rules:
 - Keep answers short and factual. Use bullet points for lists.
 - Reply in the user's language (English or Arabic)."""
 
-state = {}
+state = {"ready": False, "loading": False, "error": None}
+
+
+def _load_models_blocking():
+    """Load BGE-M3 + retriever + reranker. Runs in a background thread so the
+    HTTP port opens immediately and the Cloud Run health check passes."""
+    try:
+        state["loading"] = True
+        print("loading models (background)...", flush=True)
+        state["embedder"] = BgeM3()
+        state["retriever"] = Retriever(state["embedder"])
+        state["reranker"] = try_load()
+        state["http"] = httpx.AsyncClient(timeout=TIMEOUT)
+        state["ready"] = True
+        state["loading"] = False
+        print("ready", flush=True)
+    except Exception as e:
+        state["error"] = str(e)
+        state["loading"] = False
+        print(f"startup failed: {e}", flush=True)
 
 
 @asynccontextmanager
 async def lifespan(app):
-    print("loading models...")
-    state["embedder"] = BgeM3()
-    state["retriever"] = Retriever(state["embedder"])
-    state["reranker"] = try_load()
-    state["http"] = httpx.AsyncClient(timeout=TIMEOUT)
-    print("ready")
+    import threading
+    threading.Thread(target=_load_models_blocking, daemon=True).start()
     yield
-    await state["http"].aclose()
+    http = state.get("http")
+    if http is not None:
+        await http.aclose()
 
 
 app = FastAPI(title="DarGlobal Chatbot", lifespan=lifespan)
+
+
+async def _wait_ready(max_wait=180):
+    """Called by endpoints that need the models. Waits for background load."""
+    import asyncio
+    for _ in range(max_wait * 2):
+        if state["ready"]:
+            return True
+        if state["error"]:
+            raise RuntimeError(f"startup failed: {state['error']}")
+        await asyncio.sleep(0.5)
+    raise RuntimeError("models still loading, try again in a moment")
 
 
 class ChatIn(BaseModel):
@@ -116,6 +145,9 @@ async def call_llm(messages):
 async def health():
     r = state.get("retriever")
     return {"status": "ok",
+            "ready": state.get("ready", False),
+            "loading": state.get("loading", False),
+            "error": state.get("error"),
             "chunks": len(r.chunks) if r else 0,
             "embeddings": r.col.count() if r else 0,
             "reranker": state.get("reranker") is not None}
@@ -137,6 +169,11 @@ async def chat(inp: ChatIn):
     q = inp.message.strip()
     if not q:
         return JSONResponse({"error": "empty message"}, 400)
+
+    try:
+        await _wait_ready()
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, 503)
 
     chunks = do_retrieve(q)
     context, sources = build_context(chunks)

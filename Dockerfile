@@ -4,8 +4,9 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# Hugging Face / model cache goes to a writable temp dir
-ENV HF_HOME=/tmp/hf_cache \
+# Hugging Face model cache: MUST be outside /tmp, because Cloud Run mounts
+# /tmp as empty tmpfs at runtime and wipes any build-time downloads.
+ENV HF_HOME=/app/hf_cache \
     HF_HUB_DISABLE_TELEMETRY=1 \
     TOKENIZERS_PARALLELISM=false \
     ORT_THREADS=2 \
@@ -28,7 +29,7 @@ RUN python -c "from huggingface_hub import snapshot_download; \
     snapshot_download('jinaai/jina-reranker-v2-base-multilingual', \
         allow_patterns=['onnx/model.onnx','onnx/model.onnx_data','tokenizer.json','*.json'])"
 
-RUN mkdir -p /tmp/hf_cache && chmod -R 777 /tmp/hf_cache /app
+RUN chmod -R 777 /app
 
 EXPOSE 8080
 

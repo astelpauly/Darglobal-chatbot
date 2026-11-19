@@ -93,7 +93,7 @@ async def lifespan(app):
 app = FastAPI(title="DarGlobal Chatbot", lifespan=lifespan)
 
 
-async def _wait_ready(max_wait=180):
+async def _wait_ready(max_wait=300):
     """Called by endpoints that need the models. Waits for background load."""
     import asyncio
     for _ in range(max_wait * 2):

@@ -1,0 +1,29 @@
+# secrets & env
+.env
+.env.*
+
+# python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# scraper outputs we don't need in the app
+main.py
+scrape.py
+chunk.py
+data/raw/
+data/processed/darglobal/pages.csv
+data/processed/darglobal/pages.jsonl
+data/processed/darglobal/dropdowns.json
+data/processed/darglobal/redirects.txt
+
+# eval outputs
+eval_results.json
+
+# misc
+*.log

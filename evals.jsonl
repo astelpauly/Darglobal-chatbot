@@ -1,0 +1,30 @@
+{"question": "Where is The Mulliner located?", "must_contain": ["London", "Old Park Lane"], "page_url": "https://darglobal.co.uk/the-mulliner"}
+{"question": "What is AIDA?", "must_contain": ["Oman", "hilltop"], "page_url": "https://darglobal.co.uk/aida"}
+{"question": "Tell me about Coastal Investment Villas", "must_contain": ["Muscat", "3 bedroom", "125"], "page_url": "https://darglobal.co.uk/aida-coastal-investment-villas"}
+{"question": "When is AIDA's first phase expected to complete?", "must_contain": ["2027"]}
+{"question": "Who designed the interiors of Azure Oceanfront Villas?", "must_contain": ["Fendi Casa"]}
+{"question": "What projects are in Riyadh?", "must_contain": ["Riyadh"]}
+{"question": "What is Trump Golf Villas?", "must_contain": ["Oman"]}
+{"question": "Projects in Qatar?", "must_contain": ["Qatar"]}
+{"question": "Who is Elie Saab and what project does he partner on?", "must_contain": ["Elie Saab", "Doha"]}
+{"question": "What brands partner with DarGlobal?", "must_contain": ["Trump", "Fendi"]}
+{"question": "Area of The Mulliner in square metres?", "must_contain": ["485"]}
+{"question": "Is Mulliner still available?", "must_contain": ["sold out"]}
+{"question": "Tell me about DarGlobal Mansions in Wadi Safar", "must_contain": ["Wadi Safar", "Fendi"]}
+{"question": "What amenities does Coastal Investment Villas offer?", "must_contain": ["Ritz", "Shangri"]}
+{"question": "What is the payment plan structure?", "must_contain": ["%"]}
+{"question": "Projects in Saudi Arabia?", "must_contain": ["Saudi", "Riyadh"]}
+{"question": "What is the Great Escape 2?", "must_contain": ["Aida", "Oman"]}
+{"question": "Tell me about Les Vagues by Elie Saab", "must_contain": ["Doha", "Qatar"]}
+{"question": "Fairway Villas location?", "must_contain": ["Aida", "Oman"]}
+{"question": "What is the Marriott Residences project?", "must_contain": ["Marriott", "Aida"]}
+{"question": "ما هي مشاريع دار جلوبال في عُمان؟", "must_contain": ["عُمان"], "language": "ar"}
+{"question": "أين يقع مشرع The Mulliner؟", "must_contain": ["London", "لندن"], "language": "ar"}
+{"question": "ما هي شركة دار جلوبال؟", "must_contain": ["دار"], "language": "ar"}
+{"question": "فلل في جدة", "must_contain": ["جدة"], "language": "ar"}
+{"question": "What tax benefits does Oman offer investors?", "must_contain": ["0%", "tax"]}
+{"question": "What is the investment visa for Oman projects?", "must_contain": ["Residency", "Life"]}
+{"question": "Latest news from DarGlobal?", "must_contain": []}
+{"question": "Does DarGlobal have any projects in Dubai?", "must_contain": []}
+{"question": "Who is the CEO of DarGlobal?", "must_contain": []}
+{"question": "Tell me about weather in London", "must_contain": []}

@@ -12,10 +12,8 @@ __pycache__/
 .vscode/
 .idea/
 
-# scraper outputs we don't need in the app
-main.py
-scrape.py
-chunk.py
+# one-off pipeline scripts (not needed in the app image)
+scripts/
 data/raw/
 data/processed/darglobal/pages.csv
 data/processed/darglobal/pages.jsonl

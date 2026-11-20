@@ -9,11 +9,9 @@ data/processed/darglobal/pages.csv
 data/processed/darglobal/pages.jsonl
 data/processed/darglobal/redirects.txt
 data/processed/darglobal/dropdowns.json
-main.py
-scrape.py
-chunk.py
-evals.jsonl
-run_evals.py
+scripts/
+evals/
+docs/
 eval_results.json
 README.md
 *.log

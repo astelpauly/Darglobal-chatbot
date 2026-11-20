@@ -20,7 +20,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # app code + pre-built database (re-embedded locally with chromadb 1.x)
-COPY embed.py retrieve.py rerank.py app.py index.html ./
+COPY app/ ./app/
 COPY data/processed/darglobal/chunks.jsonl ./data/processed/darglobal/chunks.jsonl
 COPY data/chroma_db ./data/chroma_db
 
@@ -35,4 +35,4 @@ RUN chmod -R 777 /app
 EXPOSE 8080
 
 # Cloud Run sends requests to $PORT (8080 by default)
-CMD ["sh", "-c", "python -m uvicorn app:app --host 0.0.0.0 --port ${PORT:-8080}"]
+CMD ["sh", "-c", "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]

@@ -25,9 +25,9 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel
 
-from embed import BgeM3
-from retrieve import Retriever, ARABIC_RE
-from rerank import try_load
+from app.embed import BgeM3
+from app.retrieve import Retriever, ARABIC_RE
+from app.rerank import try_load
 
 try:
     from langsmith import traceable
@@ -201,4 +201,4 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     # Cloud Run sets PORT (usually 8080); local default 7860
-    uvicorn.run("app:app", host="0.0.0.0", port=int(os.getenv("PORT", "7860")))
+    uvicorn.run("app.main:app", host="0.0.0.0", port=int(os.getenv("PORT", "7860")))

@@ -1,15 +1,3 @@
----
-title: Dar Global Property Assistant
-emoji: 🏙️
-colorFrom: gray
-colorTo: yellow
-sdk: streamlit
-sdk_version: 1.40.2
-app_file: app.py
-pinned: false
-license: mit
-short_description: RAG chatbot answering questions about Dar Global projects
----
 
 # Dar Global Property Assistant
 

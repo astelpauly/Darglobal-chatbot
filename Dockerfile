@@ -19,20 +19,16 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# app code
+# app code + pre-built database (re-embedded locally with chromadb 1.x)
 COPY embed.py retrieve.py rerank.py app.py index.html ./
 COPY data/processed/darglobal/chunks.jsonl ./data/processed/darglobal/chunks.jsonl
+COPY data/chroma_db ./data/chroma_db
 
 # Pre-download the embedding + reranker models at build time
 RUN python -c "from huggingface_hub import snapshot_download; \
     snapshot_download('BAAI/bge-m3', allow_patterns=['onnx/*']); \
     snapshot_download('jinaai/jina-reranker-v2-base-multilingual', \
         allow_patterns=['onnx/model.onnx','onnx/model.onnx_data','tokenizer.json','*.json'])"
-
-# Build the ChromaDB index fresh with the current chromadb version
-# (the local chroma_db was created with 0.5.23; 1.x can't read it).
-# Takes ~5-8 min at build time but means zero migration pain at runtime.
-RUN python embed.py
 
 RUN chmod -R 777 /app
 

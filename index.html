@@ -343,17 +343,29 @@ async function ask(text) {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({message: text, history})
     });
-    const j = await r.json();
-    wait.remove();
-    if (j.error) msg("assistant", "I could not answer: " + j.error);
-    else {
-      msg("assistant", j.answer, j.sources);
-      history.push({role: "user", content: text});
-      history.push({role: "assistant", content: j.answer});
+    const txt = await r.text();
+    let j;
+    try { j = JSON.parse(txt); }
+    catch {                                      // got plaintext (e.g. "upstream request timeout")
+      wait.remove();
+      msg("assistant", "The server is still starting up (first visit can take ~1 min). "
+                     + "Please wait a moment and ask again.");
+      return;
     }
+    wait.remove();
+    if (!r.ok || j.error) {
+      const err = j.error || `server returned ${r.status}`;
+      msg("assistant", err.includes("loading")
+          ? "The server is still loading models. Please wait ~30 seconds and ask again."
+          : "I could not answer: " + err);
+      return;
+    }
+    msg("assistant", j.answer, j.sources);
+    history.push({role: "user", content: text});
+    history.push({role: "assistant", content: j.answer});
   } catch (e) {
     wait.remove();
-    msg("assistant", "Network error: " + e.message);
+    msg("assistant", "Network error: " + e.message + " — please try again.");
   }
   send.disabled = false;
   q.focus();

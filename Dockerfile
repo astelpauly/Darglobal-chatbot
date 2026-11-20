@@ -6,10 +6,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Hugging Face model cache: MUST be outside /tmp, because Cloud Run mounts
 # /tmp as empty tmpfs at runtime and wipes any build-time downloads.
+# PYTHONUNBUFFERED=1 forces print() to flush immediately so logs show up live.
 ENV HF_HOME=/app/hf_cache \
     HF_HUB_DISABLE_TELEMETRY=1 \
     TOKENIZERS_PARALLELISM=false \
     ORT_THREADS=2 \
+    PYTHONUNBUFFERED=1 \
     PORT=8080
 
 WORKDIR /app
